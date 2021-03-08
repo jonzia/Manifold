@@ -1,37 +1,23 @@
-## Welcome to GitHub Pages
+# Manifold Mapping with ISOMAP
 
-You can use the [editor on GitHub](https://github.com/jonzia/Manifold/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+## Summary
+This repository contains the `Manifold` class which uses the [ISOMAP](http://web.mit.edu/cocosci/Papers/sci_reprint.pdf) method (Tenenbaum, 2000) to characterize manifolds and extract latent variables. This latter component is accomplished with multidimensional scaling, though other methods such as locally linear embedding may be substituted. The notable drawback to ISOMAP is that it may be easily broken with outlier datapoints owing to its reliance on accurate geodesic distance calculation. However, ISOMAP remains an impressively accurate method of manifold mapping with few prior assumptions placed on the data. Other drawbacks include that the algorithm has O(N^3) complexity and that the manifold is defined by the downsampled graph rather than a set of equations that could be used to generate more points conforming to the underlying dynamics captured by the manifold.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## How to Use
+To use this class, we first initialize the `Manifold` object using `manifold = Manifold("Description")` and load the data using `manifold = manifold.createGraph(data)`. The resulting graph may be visualized with the function `manifold.plotGraph()`. To implement the ISOMAP algorithm, we must first compute the geodesic distances between all nodes in the graph using the function `manifold = manifold.shortestPath()`, followed by latent variable extraction via `manifold = manifold.scale()`, which performs multidimensional scaling.
 
-### Markdown
+### Data Formatting
+The data should be formatted as a MxN matrix with M observations and N dimensions.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Member Functions
+| Function | Purpose |
+| --- | --- |
+| `createGraph()` | Create adjacency graph for performing ISOMAP |
+| `latent()` | Function returning latent variables and corresponding original datapoints |
+| `map()` | Map new datapoints to learned manifold |
+| `plotGraph()` | Plot datapoints on adjacency graph |
+| `scale()` | Perform multidimensional scaling using dissimilarity matrix |
+| `shortestPath()` | Computing geodesic distances between points in adjacency graph |
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jonzia/Manifold/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## References
+This repository was used in the [linked paper](https://www.researchgate.net/publication/343446322_Harnessing_the_Manifold_Structure_of_Cardiomechanical_Signals_for_Physiological_Monitoring_during_Hemorrhage), which contains a more detailed explanation of ISOMAP and its drawbacks.
